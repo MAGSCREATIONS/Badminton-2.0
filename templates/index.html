@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Badminton Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary:    #1a73e8;
+            --green:      #1e9e52;
+            --orange:     #e8710a;
+            --danger:     #d93025;
+            --bg:         #0f1117;
+            --surface:    #1c1f2a;
+            --surface2:   #252836;
+            --border:     rgba(255,255,255,0.08);
+            --text:       #f0f2f8;
+            --muted:      #8b90a0;
+            --radius:     14px;
+            --tab-h:      62px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ── Header ── */
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            padding: 18px 20px 14px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+        }
+        header h1 { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+        header p  { font-size: 11px; opacity: 0.7; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* ── Pages ── */
+        .page { display: none; flex: 1; padding: 16px; padding-bottom: calc(var(--tab-h) + 16px); animation: fadeUp 0.25s ease; }
+        .page.active { display: block; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+        /* ── Card ── */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+        .card-title { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 12px; }
+
+        /* ── Inputs ── */
+        input[type="text"], input[type="date"], select {
+            width: 100%; padding: 13px 14px;
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            font-family: 'DM Sans', sans-serif; font-size: 15px;
+            outline: none; appearance: none; -webkit-appearance: none; margin-bottom: 10px;
+        }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.2); }
+        select option { background: var(--surface2); }
+
+        /* ── Buttons ── */
+        .btn {
+            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+            color: white; cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:active { transform: scale(0.97); opacity: 0.9; }
+        .btn-primary { background: var(--primary); }
+        .btn-green   { background: var(--green); }
+        .btn-gray    { background: var(--surface2); color: var(--muted); font-size: 14px; }
+        .btn-sm      { padding: 9px 14px; font-size: 13px; width: auto; border-radius: 8px; }
+        .btn-row     { display: flex; gap: 8px; margin-bottom: 10px; }
+        .btn-row .btn { flex: 1; }
+
+        /* ── Player Items ── */
+        .player-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+        .player-item:last-child { border-bottom: none; }
+        .player-item label { flex: 1; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .player-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
+        .remove-btn { color: var(--danger); font-size: 22px; cursor: pointer; padding: 4px 8px; line-height: 1; flex-shrink: 0; }
+
+        /* ── Court Cards ── */
+        .court-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); border-top: 4px solid var(--primary); padding: 16px; margin-bottom: 12px; }
+        .court-title { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 14px; }
+        .teams-row { display: flex; align-items: center; gap: 10px; }
+        .team-box { flex: 1; background: var(--surface2); border-radius: 10px; padding: 12px; text-align: center; }
+        .team-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+        .team-names { font-size: 14px; font-weight: 600; line-height: 1.6; }
+        .vs-badge { background: #333; color: white; padding: 5px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+
+        /* ── Attendance ── */
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-present { background: rgba(30,158,82,0.15); color: #4caf50; }
+        .status-absent  { background: rgba(217,48,37,0.15);  color: #ef5350; }
+        .att-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .att-row:last-child { border-bottom: none; }
+        .att-name { font-size: 15px; font-weight: 500; }
+
+        .summary-banner { display: none; background: rgba(30,158,82,0.12); border: 1px solid rgba(30,158,82,0.3); border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; line-height: 1.8; }
+        .summary-banner.show { display: block; }
+
+        /* ── Empty ── */
+        .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+        .empty .icon { font-size: 48px; margin-bottom: 12px; }
+        .empty p { font-size: 14px; }
+
+        /* ── Bottom Tab Bar ── */
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: var(--tab-h); background: var(--surface); border-top: 1px solid var(--border); display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
+        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--muted); transition: color 0.2s; padding: 8px 4px; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+        .tab-item.active { color: var(--primary); }
+        .tab-icon  { font-size: 22px; }
+        .tab-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ── Section label ── */
+        .section-label { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 16px 0 8px; }
+
+        /* ── Toast ── */
+        .toast { position: fixed; bottom: calc(var(--tab-h) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 200; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ── Desktop centering ── */
+        @media (min-width: 600px) {
+            body { max-width: 480px; margin: 0 auto; }
+            body::before { content:''; position:fixed; inset:0; background:#080a0f; z-index:-1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏸 Badminton Manager</h1>
+    <p>Group Randomizer &amp; Attendance</p>
+</header>
+
+<!-- ══ PAGE: ROSTER ══ -->
+<div class="page active" id="page-roster">
+    <div class="card" style="margin-top:4px;">
+        <div class="card-title">Add New Player</div>
+        <input type="text" id="new-name" placeholder="Full Name">
+        <select id="new-skill">
+            <option value="Beginner">🟢 Beginner</option>
+            <option value="Intermediate" selected>🟠 Intermediate</option>
+            <option value="Advanced">🔴 Advanced</option>
+        </select>
+        <button class="btn btn-primary" onclick="addPlayer()">＋ Add to Roster</button>
+    </div>
+
+    <div class="section-label">Players ({{ players|length }})</div>
+
+    <div class="card">
+        <div class="btn-row">
+            <button class="btn btn-gray btn-sm" onclick="selectAll(true)">Select All</button>
+            <button class="btn btn-gray btn-sm" onclick="selectAll(false)">None</button>
+        </div>
+        <div id="roster-list">
+            {% for player in players %}
+            <div class="player-item">
+                <label>
+                    <input type="checkbox" class="present-check" value="{{ player.get_name() }}">
+                    {{ player.get_name() }}
+                </label>
+                <span class="remove-btn" onclick="removePlayer('{{ player.get_name() }}')">×</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- ══ PAGE: RANDOMIZE ══ -->
+<div class="page" id="page-randomize">
+    <div class="card" style="margin-top:4px;">
+        <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">Check players in the Roster tab first, then tap Randomize.</p>
+        <button class="btn btn-green" onclick="generateGroups()">🎲 Randomize Balanced Teams</button>
+    </div>
+    <div id="match-results"></div>
+</div>
+
+<!-- ══ PAGE: ATTENDANCE ══ -->
+<div class="page" id="page-attendance">
+    <div class="btn-row" style="margin-top:4px;">
+        <button class="btn btn-primary btn-sm" id="sub-mark-btn" onclick="showSubTab('mark')" style="flex:1">✏️ Mark</button>
+        <button class="btn btn-gray   btn-sm" id="sub-view-btn" onclick="showSubTab('view')" style="flex:1">👁 View</button>
+    </div>
+
+    <!-- Mark tab -->
+    <div id="sub-mark">
+        <div class="card">
+            <div class="card-title">Date</div>
+            <input type="date" id="mark-date">
+        </div>
+        <div class="card">
+            <div class="card-title">Who's Present?</div>
+            <div class="btn-row">
+                <button class="btn btn-gray btn-sm" onclick="attSelectAll(true)">All Present</button>
+                <button class="btn btn-gray btn-sm" onclick="attSelectAll(false)">Clear</button>
+            </div>
+            <div id="att-player-list">
+                {% for player in players %}
+                <div class="player-item">
+                    <label>
+                        <input type="checkbox" class="attendance-check" value="{{ player.get_name() }}">
+                        {{ player.get_name() }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="summary-banner" id="att-summary"></div>
+        <button class="btn btn-green" onclick="saveAttendance()">✅ Save Attendance</button>
+    </div>
+
+    <!-- View tab -->
+    <div id="sub-view" style="display:none;">
+        <div class="card">
+            <div class="card-title">Select Date</div>
+            <input type="date" id="view-date">
+            <div class="btn-row">
+                <button class="btn btn-primary btn-sm" onclick="fetchAttendance()" style="flex:1">View</button>
+                <button class="btn btn-gray   btn-sm" onclick="fetchAttendance('today')" style="flex:1">Today</button>
+            </div>
+        </div>
+        <div class="card" id="att-records-card" style="display:none;">
+            <div class="card-title" id="att-records-date"></div>
+            <div id="att-records"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ BOTTOM TAB BAR ══ -->
+<nav class="tab-bar">
+    <button class="tab-item active" id="tab-roster"     onclick="showPage('roster')">
+        <span class="tab-icon">👥</span><span class="tab-label">Roster</span>
+    </button>
+    <button class="tab-item"        id="tab-randomize"  onclick="showPage('randomize')">
+        <span class="tab-icon">🎲</span><span class="tab-label">Randomize</span>
+    </button>
+    <button class="tab-item"        id="tab-attendance" onclick="showPage('attendance')">
+        <span class="tab-icon">📋</span><span class="tab-label">Attendance</span>
+    </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // ── Navigation ────────────────────────────────────────────────────────
+    function showPage(name) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.getElementById('page-' + name).classList.add('active');
+        document.getElementById('tab-'  + name).classList.add('active');
+    }
+
+    function showSubTab(name) {
+        document.getElementById('sub-mark').style.display = name === 'mark' ? 'block' : 'none';
+        document.getElementById('sub-view').style.display = name === 'view' ? 'block' : 'none';
+        document.getElementById('sub-mark-btn').className = 'btn btn-sm ' + (name === 'mark' ? 'btn-primary' : 'btn-gray');
+        document.getElementById('sub-view-btn').className = 'btn btn-sm ' + (name === 'view' ? 'btn-primary' : 'btn-gray');
+    }
+
+    // ── Toast ─────────────────────────────────────────────────────────────
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ── Roster ────────────────────────────────────────────────────────────
+    function selectAll(checked) {
+        document.querySelectorAll('.present-check').forEach(cb => cb.checked = checked);
+    }
+
+    async function addPlayer() {
+        const nameEl = document.getElementById('new-name');
+        const skill  = document.getElementById('new-skill').value;
+        const name   = nameEl.value.trim();
+        if (!name) return showToast('⚠️ Enter a player name');
+        await fetch('/add_player', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ name, skill })
+        });
+        nameEl.value = '';
+        showToast('✅ ' + name + ' added');
+        setTimeout(() => location.reload(), 800);
+    }
+
+    async function removePlayer(name) {
+        if (!confirm('Remove ' + name + ' from roster?')) return;
+        await fetch('/remove_player', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ name })
+        });
+        showToast('🗑️ ' + name + ' removed');
+        setTimeout(() => location.reload(), 800);
+    }
+
+    // ── Randomize ─────────────────────────────────────────────────────────
+    async function generateGroups() {
+        const present = Array.from(document.querySelectorAll('.present-check:checked')).map(cb => cb.value);
+        if (present.length < 4) return showToast('⚠️ Check at least 4 players in Roster');
+        const res  = await fetch('/randomize', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ present_players: present })
+        });
+        const data = await res.json();
+        const box  = document.getElementById('match-results');
+        box.innerHTML = '';
+        if (data.error) return showToast('❌ ' + data.error);
+        data.groups.forEach(g => {
+            box.innerHTML += `
+                <div class="court-card">
+                    <div class="court-title">🏸 Court ${g.group_number}</div>
+                    <div class="teams-row">
+                        <div class="team-box">
+                            <div class="team-label">Team A</div>
+                            <div class="team-names">${g.team1.join('<br>')}</div>
+                        </div>
+                        <div class="vs-badge">VS</div>
+                        <div class="team-box">
+                            <div class="team-label">Team B</div>
+                            <div class="team-names">${g.team2.join('<br>')}</div>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        showToast('🎲 Groups generated!');
+    }
+
+    // ── Attendance ────────────────────────────────────────────────────────
+    function attSelectAll(checked) {
+        document.querySelectorAll('.attendance-check').forEach(cb => cb.checked = checked);
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('mark-date').value = today;
+    document.getElementById('view-date').value = today;
+
+    async function saveAttendance() {
+        const date    = document.getElementById('mark-date').value;
+        const present = Array.from(document.querySelectorAll('.attendance-check:checked')).map(cb => cb.value);
+        const res  = await fetch('/mark_attendance', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ present_players: present, date })
+        });
+        const data = await res.json();
+        if (data.error) return showToast('❌ ' + data.error);
+        const banner = document.getElementById('att-summary');
+        banner.className = 'summary-banner show';
+        banner.innerHTML = `
+            <strong>✅ Saved for ${data.date}</strong><br>
+            <span style="color:#4caf50">Present (${data.present.length}): ${data.present.join(', ') || '—'}</span><br>
+            <span style="color:#ef5350">Absent (${data.absent.length}): ${data.absent.join(', ') || '—'}</span>
+        `;
+        showToast('✅ Attendance saved!');
+    }
+
+    async function fetchAttendance(mode) {
+        const date = mode === 'today' ? today : document.getElementById('view-date').value;
+        if (!date) return showToast('⚠️ Select a date');
+        const res     = await fetch('/attendance/' + date);
+        const records = await res.json();
+        const card    = document.getElementById('att-records-card');
+        const box     = document.getElementById('att-records');
+        const title   = document.getElementById('att-records-date');
+        card.style.display = 'block';
+        title.textContent  = 'Records — ' + date;
+        if (!records.length) {
+            box.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No records for this date.</p></div>';
+            return;
+        }
+        box.innerHTML = records.map(r => `
+            <div class="att-row">
+                <span class="att-name">${r.player_name}</span>
+                <span class="status-badge status-${r.status}">${r.status}</span>
+            </div>
+        `).join('');
+    }
+</script>
+</body>
+</html>

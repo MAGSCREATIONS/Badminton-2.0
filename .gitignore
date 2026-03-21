@@ -1,0 +1,6 @@
+serviceAccountKey.json
+players_data.json
+badminton.db
+__pycache__/
+*.pyc
+.env
