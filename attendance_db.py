@@ -16,8 +16,6 @@ if not firebase_admin._apps:
 _db = firestore.client()
 _COLLECTION = "attendance"
 
-# ── Utility ───────────────────────────────────────────────────────────────────
-
 def _to_date_str(date) -> str:
     if date is None:
         return str(_date_type.today())
@@ -30,8 +28,6 @@ def _to_date_str(date) -> str:
 
 def _doc_id(player_name: str, date_str: str) -> str:
     return f"{player_name.strip()}_{date_str}"
-
-# ── Public API ────────────────────────────────────────────────────────────────
 
 def mark_present(player_name: str, date=None) -> None:
     _mark(player_name, date, "present")
