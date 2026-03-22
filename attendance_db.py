@@ -1,16 +1,16 @@
 import os
+import json
 from datetime import date as _date_type
 
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# ── Initialise Firebase ───────────────────────────────────────────────────────
-
-_SERVICE_ACCOUNT = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS",
-                   os.path.join(os.path.dirname(__file__), "serviceAccountKey.json"))
-
 if not firebase_admin._apps:
-    cred = credentials.Certificate(_SERVICE_ACCOUNT)
+    firebase_creds = os.environ.get("FIREBASE_CREDENTIALS")
+    if firebase_creds:
+        cred = credentials.Certificate(json.loads(firebase_creds))
+    else:
+        cred = credentials.Certificate("serviceAccountKey.json")
     firebase_admin.initialize_app(cred)
 
 _db = firestore.client()
