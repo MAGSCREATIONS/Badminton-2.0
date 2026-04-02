@@ -29,19 +29,20 @@ def _to_date_str(date) -> str:
 def _doc_id(player_name: str, date_str: str) -> str:
     return f"{player_name.strip()}_{date_str}"
 
-def mark_present(player_name: str, date=None) -> None:
-    _mark(player_name, date, "present")
+def mark_present(player_name: str, date=None, amount=0.0) -> None:
+    _mark(player_name, date, "present", amount)
 
 def mark_absent(player_name: str, date=None) -> None:
-    _mark(player_name, date, "absent")
+    _mark(player_name, date, "absent", 0.0)
 
-def _mark(player_name: str, date, status: str) -> None:
+def _mark(player_name: str, date, status: str, amount=0.0) -> None:
     date_str = _to_date_str(date)
     doc_ref  = _db.collection(_COLLECTION).document(_doc_id(player_name, date_str))
     doc_ref.set({
         "player_name": player_name.strip(),
         "date":        date_str,
         "status":      status,
+        "amount":      float(amount),
     })
 
 def get_attendance_by_date(date=None) -> list[dict]:

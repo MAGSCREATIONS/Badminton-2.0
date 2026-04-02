@@ -76,40 +76,48 @@ def generate_balanced_groups(present_names):
 
 # ── Attendance helpers (new) ──────────────────────────────────────────────────
 
-def mark_attendance(present_names: list[str], date=None) -> dict:
+def mark_attendance(present_names: list[str], contributions: dict | None = None, date=None) -> dict:
     """
     Mark today's (or a given date's) attendance for the full roster.
 
     Players whose names appear in *present_names* are marked 'present';
     everyone else in the roster is marked 'absent'.
 
+    Contributions may be provided as a mapping from player name to amount paid.
+
     Args:
         present_names: List of player name strings who are present.
+        contributions: Mapping of player names to amounts contributed.
         date:          'YYYY-MM-DD' string, datetime.date, or None for today.
 
     Returns:
-        A summary dict: {"present": [...], "absent": [...], "date": "YYYY-MM-DD"}
+        A summary dict with present/absent details and the total pool amount.
     """
     all_players  = load_players()
     present_set  = {n.strip() for n in present_names}
+    contributions = contributions or {}
 
     marked_present = []
     marked_absent  = []
+    total_amount   = 0.0
 
     for player in all_players:
         name = player.get_name()
         if name in present_set:
-            mark_present(name, date)
+            amount = float(contributions.get(name, 0) or 0)
+            mark_present(name, date, amount)
             marked_present.append(name)
+            total_amount += amount
         else:
             mark_absent(name, date)
             marked_absent.append(name)
 
     from attendance_db import _to_date_str
     return {
-        "date":    _to_date_str(date),
-        "present": marked_present,
-        "absent":  marked_absent,
+        "date":         _to_date_str(date),
+        "present":      marked_present,
+        "absent":       marked_absent,
+        "total_amount": total_amount,
     }
 
 

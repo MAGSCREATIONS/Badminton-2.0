@@ -4,6 +4,8 @@ from logic import (
     mark_attendance,
     get_attendance_by_date, get_all_attendance, get_attendance_by_player,
 )
+from session_db import create_session, get_session, get_all_sessions, record_payment, get_player_summary, clear_all_payments
+from sheets_export import export_session_summary
 
 app = Flask(__name__)
 
@@ -47,7 +49,7 @@ def attendance_mark():
     present_names = data.get("present_players", [])
     date = data.get("date", None)
     try:
-        summary = mark_attendance(present_names, date)
+        summary = mark_attendance(present_names, date=date)
         return jsonify(summary)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -70,6 +72,60 @@ def attendance_by_player(player_name):
 @app.route("/attendance/all")
 def attendance_all():
     return jsonify(get_all_attendance())
+
+# ── Session routes ────────────────────────────────────────────────────────────
+
+@app.route("/session/create", methods=["POST"])
+def session_create():
+    data = request.json
+    try:
+        session = create_session(
+            date=data.get("date"),
+            courts=int(data["courts"]),
+            session_hours=float(data["hours"]),
+            player_hours=data["player_hours"]
+        )
+        return jsonify(session)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route("/session/<date>")
+def session_get(date):
+    session = get_session(date)
+    if not session:
+        return jsonify({"error": "No session found"}), 404
+    return jsonify(session)
+
+@app.route("/session/all")
+def session_all():
+    return jsonify(get_all_sessions())
+
+@app.route("/session/pay", methods=["POST"])
+def session_pay():
+    data = request.json
+    try:
+        updated = record_payment(data["date"], data["player_name"], float(data["amount"]))
+        return jsonify(updated)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route("/session/summary")
+def session_summary():
+    return jsonify(get_player_summary())
+
+@app.route("/session/export-summary", methods=["POST"])
+def session_export_summary():
+    try:
+        return jsonify(export_session_summary(get_player_summary()))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route("/session/clear-payments", methods=["POST"])
+def session_clear_payments():
+    try:
+        return jsonify(clear_all_payments())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
