@@ -25,7 +25,8 @@ from attendance_db import (          # ← new import
     get_attendance_by_player,
 )
 
-PLAYER_FILE = "players_data.json"
+BASE_DIR = os.environ.get("DATA_DIR", os.path.dirname(os.path.abspath(__file__)))
+PLAYER_FILE = os.path.join(BASE_DIR, "players_data.json")
 
 # ── Roster helpers (unchanged) ────────────────────────────────────────────────
 
