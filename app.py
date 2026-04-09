@@ -1,5 +1,6 @@
 import io
 import os
+import shutil
 
 from flask import Flask, request, jsonify, render_template, send_file
 from openpyxl import Workbook
@@ -14,6 +15,25 @@ from session_db import (
     record_payment, get_player_summary, clear_all_payments
 )
 
+
+def ensure_data_dir_seeded() -> None:
+    data_dir = os.environ.get("DATA_DIR")
+    if not data_dir:
+        return
+
+    os.makedirs(data_dir, exist_ok=True)
+
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    seed_files = ("players_data.json", "badminton.db")
+
+    for file_name in seed_files:
+        source_path = os.path.join(project_dir, file_name)
+        destination_path = os.path.join(data_dir, file_name)
+        if os.path.exists(source_path) and not os.path.exists(destination_path):
+            shutil.copy2(source_path, destination_path)
+
+
+ensure_data_dir_seeded()
 app = Flask(__name__)
 
 @app.route("/")
