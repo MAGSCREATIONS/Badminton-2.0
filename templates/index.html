@@ -7,88 +7,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary:    #1a73e8;
-            --green:      #1e9e52;
-            --orange:     #e8710a;
-            --danger:     #d93025;
-            --bg:         #0f1117;
-            --surface:    #1c1f2a;
-            --surface2:   #252836;
-            --border:     rgba(255,255,255,0.08);
-            --text:       #f0f2f8;
-            --muted:      #8b90a0;
-            --radius:     14px;
-            --tab-h:      62px;
+            --primary: #1a73e8; --green: #1e9e52; --danger: #d93025;
+            --purple: #7c3aed; --bg: #0f1117; --surface: #1c1f2a;
+            --surface2: #252836; --border: rgba(255,255,255,0.08);
+            --text: #f0f2f8; --muted: #8b90a0; --radius: 14px; --tab-h: 62px;
         }
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        /* ── Header ── */
-        header {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            padding: 18px 20px 14px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.4);
-        }
-        header h1 { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; flex-direction: column; overflow-x: hidden; }
+        header { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); padding: 18px 20px 14px; text-align: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 20px rgba(0,0,0,0.4); }
+        header h1 { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; }
         header p  { font-size: 11px; opacity: 0.7; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
-
-        /* ── Pages ── */
+        .header-danger-btn { position: absolute; top: 12px; right: 12px; border: 1px solid rgba(255,255,255,0.24); background: rgba(0,0,0,0.18); color: white; border-radius: 999px; padding: 7px 10px; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .header-danger-btn:active { transform: scale(0.97); }
         .page { display: none; flex: 1; padding: 16px; padding-bottom: calc(var(--tab-h) + 16px); animation: fadeUp 0.25s ease; }
         .page.active { display: block; }
         @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-        /* ── Card ── */
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
         .card-title { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 12px; }
-
-        /* ── Inputs ── */
-        input[type="text"], input[type="date"], select {
-            width: 100%; padding: 13px 14px;
-            background: var(--surface2); border: 1px solid var(--border);
-            border-radius: 10px; color: var(--text);
-            font-family: 'DM Sans', sans-serif; font-size: 15px;
+        input[type="text"], input[type="date"], input[type="number"], select {
+            width: 100%; padding: 13px 14px; background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
             outline: none; appearance: none; -webkit-appearance: none; margin-bottom: 10px;
         }
         input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.2); }
         select option { background: var(--surface2); }
-
-        /* ── Buttons ── */
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
-            font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
-            color: white; cursor: pointer; transition: transform 0.1s, opacity 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; color: white; cursor: pointer; transition: transform 0.1s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn:active { transform: scale(0.97); opacity: 0.9; }
         .btn-primary { background: var(--primary); }
         .btn-green   { background: var(--green); }
+        .btn-purple  { background: var(--purple); }
         .btn-gray    { background: var(--surface2); color: var(--muted); font-size: 14px; }
         .btn-sm      { padding: 9px 14px; font-size: 13px; width: auto; border-radius: 8px; }
         .btn-row     { display: flex; gap: 8px; margin-bottom: 10px; }
         .btn-row .btn { flex: 1; }
-
-        /* ── Player Items ── */
         .player-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
         .player-item:last-child { border-bottom: none; }
         .player-item label { flex: 1; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .player-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
+        .money-input { width: 100px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 14px; text-align: right; margin-bottom: 0; }
         .remove-btn { color: var(--danger); font-size: 22px; cursor: pointer; padding: 4px 8px; line-height: 1; flex-shrink: 0; }
-
-        /* ── Court Cards ── */
         .court-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); border-top: 4px solid var(--primary); padding: 16px; margin-bottom: 12px; }
         .court-title { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 14px; }
         .teams-row { display: flex; align-items: center; gap: 10px; }
@@ -96,47 +53,77 @@
         .team-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
         .team-names { font-size: 14px; font-weight: 600; line-height: 1.6; }
         .vs-badge { background: #333; color: white; padding: 5px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; flex-shrink: 0; }
-
-        /* ── Attendance ── */
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .status-present { background: rgba(30,158,82,0.15); color: #4caf50; }
-        .status-absent  { background: rgba(217,48,37,0.15);  color: #ef5350; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .status-present  { background: rgba(30,158,82,0.15); color: #4caf50; }
+        .status-absent   { background: rgba(217,48,37,0.15); color: #ef5350; }
+        .status-advance  { background: rgba(30,158,82,0.15); color: #4caf50; }
+        .status-balance  { background: rgba(217,48,37,0.15); color: #ef5350; }
+        .status-settled  { background: rgba(139,144,160,0.15); color: var(--muted); }
         .att-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .att-row:last-child { border-bottom: none; }
         .att-name { font-size: 15px; font-weight: 500; }
-
         .summary-banner { display: none; background: rgba(30,158,82,0.12); border: 1px solid rgba(30,158,82,0.3); border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; line-height: 1.8; }
         .summary-banner.show { display: block; }
-
-        /* ── Empty ── */
         .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
         .empty .icon { font-size: 48px; margin-bottom: 12px; }
         .empty p { font-size: 14px; }
+        .section-label { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 16px 0 8px; }
 
-        /* ── Bottom Tab Bar ── */
+        /* ── Session styles ── */
+        .session-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); border-top: 4px solid var(--purple); padding: 16px; margin-bottom: 12px; }
+        .session-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .session-date { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; }
+        .session-total { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: var(--purple); }
+        .session-meta { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+        .session-player-row { display: flex; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+        .session-player-row:last-child { border-bottom: none; }
+        .session-player-name { font-size: 14px; font-weight: 600; flex: 1; }
+        .session-player-detail { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.6; }
+        .hours-selector { display: flex; gap: 5px; flex-wrap: wrap; }
+        .hours-btn { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--muted); font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+        .hours-btn.selected { background: var(--purple); color: white; border-color: var(--purple); }
+        .player-hours-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 10px; }
+        .player-hours-row:last-child { border-bottom: none; }
+        .player-hours-name { font-size: 14px; font-weight: 500; min-width: 70px; }
+        .cost-preview { display: none; background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; line-height: 1.9; }
+        .cost-preview.show { display: block; }
+        .player-summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+        .player-summary-name { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .summary-boxes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .summary-box { background: var(--surface2); border-radius: 10px; padding: 12px 8px; text-align: center; }
+        .summary-box-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 6px; }
+        .summary-box-value { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; }
+        .summary-box-value.hours  { color: #60a5fa; }
+        .summary-box-value.paid   { color: #4caf50; }
+        .summary-box-value.advance { color: #4caf50; }
+        .summary-box-value.balance { color: #ef5350; }
+        .summary-box-value.settled { color: var(--muted); }
+        .summary-box-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+        .two-col label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 5px; }
+        .two-col select { margin-bottom: 0; }
+
+        /* ── Pay modal ── */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; justify-content: center; align-items: center; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: var(--surface); border-radius: var(--radius); padding: 24px; width: 320px; max-width: 92vw; }
+        .modal h3 { font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+        .modal-close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; margin-top: -2px; }
+
+        /* ── Tab bar ── */
         .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: var(--tab-h); background: var(--surface); border-top: 1px solid var(--border); display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--muted); transition: color 0.2s; padding: 8px 4px; border: none; background: none; font-family: 'DM Sans', sans-serif; }
         .tab-item.active { color: var(--primary); }
-        .tab-icon  { font-size: 22px; }
+        .tab-icon  { font-size: 20px; }
         .tab-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* ── Section label ── */
-        .section-label { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 16px 0 8px; }
-
-        /* ── Toast ── */
         .toast { position: fixed; bottom: calc(var(--tab-h) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 200; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        /* ── Desktop centering ── */
-        @media (min-width: 600px) {
-            body { max-width: 480px; margin: 0 auto; }
-            body::before { content:''; position:fixed; inset:0; background:#080a0f; z-index:-1; }
-        }
+        @media (min-width: 600px) { body { max-width: 480px; margin: 0 auto; } body::before { content:''; position:fixed; inset:0; background:#080a0f; z-index:-1; } }
     </style>
 </head>
 <body>
 
 <header>
+    <button class="header-danger-btn" onclick="clearAllPayments()">Clear Paid</button>
     <h1>🏸 Badminton Manager</h1>
     <p>Group Randomizer &amp; Attendance</p>
 </header>
@@ -153,9 +140,7 @@
         </select>
         <button class="btn btn-primary" onclick="addPlayer()">＋ Add to Roster</button>
     </div>
-
     <div class="section-label">Players ({{ players|length }})</div>
-
     <div class="card">
         <div class="btn-row">
             <button class="btn btn-gray btn-sm" onclick="selectAll(true)">Select All</button>
@@ -185,13 +170,11 @@
 </div>
 
 <!-- ══ PAGE: ATTENDANCE ══ -->
-<div class="page" id="page-attendance">
+<div class="page" id="page-attendance" style="display:none;">
     <div class="btn-row" style="margin-top:4px;">
         <button class="btn btn-primary btn-sm" id="sub-mark-btn" onclick="showSubTab('mark')" style="flex:1">✏️ Mark</button>
         <button class="btn btn-gray   btn-sm" id="sub-view-btn" onclick="showSubTab('view')" style="flex:1">👁 View</button>
     </div>
-
-    <!-- Mark tab -->
     <div id="sub-mark">
         <div class="card">
             <div class="card-title">Date</div>
@@ -217,8 +200,6 @@
         <div class="summary-banner" id="att-summary"></div>
         <button class="btn btn-green" onclick="saveAttendance()">✅ Save Attendance</button>
     </div>
-
-    <!-- View tab -->
     <div id="sub-view" style="display:none;">
         <div class="card">
             <div class="card-title">Select Date</div>
@@ -235,6 +216,87 @@
     </div>
 </div>
 
+<!-- ══ PAGE: SESSIONS ══ -->
+<div class="page" id="page-sessions">
+    <div class="btn-row" style="margin-top:4px;">
+        <button class="btn btn-purple btn-sm" id="sess-new-btn"  onclick="showSessTab('new')"  style="flex:1">➕ New</button>
+        <button class="btn btn-gray   btn-sm" id="sess-summ-btn" onclick="showSessTab('summ')" style="flex:1">👤 Summary</button>
+    </div>
+
+    <!-- New Session -->
+    <div id="sess-new">
+        <div class="card">
+            <div class="card-title">Session Details</div>
+            <input type="date" id="sess-date">
+            <div class="two-col">
+                <div>
+                    <label>Courts Booked</label>
+                    <select id="sess-courts">
+                        <option value="1">1 Court</option>
+                        <option value="2">2 Courts</option>
+                        <option value="3">3 Courts</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Duration</label>
+                    <select id="sess-hours">
+                        <option value="1">1 Hour</option>
+                        <option value="1.5">1½ Hours</option>
+                        <option value="2">2 Hours</option>
+                        <option value="2.5">2½ Hours</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Hours Played Per Player</div>
+            <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Tap hours each player played. Select 0 if they didn't play.</p>
+            <div id="player-hours-list">
+                {% for player in players %}
+                <div class="player-hours-row">
+                    <span class="player-hours-name">{{ player.get_name() }}</span>
+                    <div class="hours-selector">
+                        <button class="hours-btn selected" onclick="setHours('{{ player.get_name() }}', 0, this)">0</button>
+                        <button class="hours-btn" onclick="setHours('{{ player.get_name() }}', 1, this)">1</button>
+                        <button class="hours-btn" onclick="setHours('{{ player.get_name() }}', 1.5, this)">1½</button>
+                        <button class="hours-btn" onclick="setHours('{{ player.get_name() }}', 2, this)">2</button>
+                        <button class="hours-btn" onclick="setHours('{{ player.get_name() }}', 2.5, this)">2½</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="cost-preview" id="cost-preview"></div>
+
+        <div class="btn-row">
+            <button class="btn btn-gray btn-sm" onclick="previewCost()" style="flex:1">👁 Preview Cost</button>
+            <button class="btn btn-purple btn-sm" onclick="saveSession()" style="flex:1">💾 Save Session</button>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div id="sess-summ" style="display:none;">
+        <div class="btn-row" style="margin-bottom:12px;">
+            <button class="btn btn-purple btn-sm" onclick="loadPlayerSummary()" style="flex:1">🔄 Load Summary</button>
+            <button class="btn btn-gray btn-sm" onclick="exportSummaryExcel()" style="flex:1">📥 Export Excel</button>
+        </div>
+        <div id="player-summary"></div>
+    </div>
+</div>
+
+<!-- ══ PAY MODAL ══ -->
+<div class="modal-overlay" id="pay-modal">
+    <div class="modal">
+        <span class="modal-close" onclick="closePayModal()">×</span>
+        <h3>💳 Record Payment</h3>
+        <p id="pay-modal-info" style="font-size:13px; color:var(--muted); margin-bottom:14px;"></p>
+        <input type="number" id="pay-amount" placeholder="Amount (₹)" min="0" step="1">
+        <button class="btn btn-purple" onclick="submitPayment()">✅ Confirm Payment</button>
+    </div>
+</div>
+
 <!-- ══ BOTTOM TAB BAR ══ -->
 <nav class="tab-bar">
     <button class="tab-item active" id="tab-roster"     onclick="showPage('roster')">
@@ -243,14 +305,41 @@
     <button class="tab-item"        id="tab-randomize"  onclick="showPage('randomize')">
         <span class="tab-icon">🎲</span><span class="tab-label">Randomize</span>
     </button>
-    <button class="tab-item"        id="tab-attendance" onclick="showPage('attendance')">
+    <button class="tab-item"        id="tab-attendance" onclick="showPage('attendance')" style="display:none;">
         <span class="tab-icon">📋</span><span class="tab-label">Attendance</span>
+    </button>
+    <button class="tab-item"        id="tab-sessions"   onclick="showPage('sessions')">
+        <span class="tab-icon">💰</span><span class="tab-label">Sessions</span>
     </button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
+    async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 10000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const res = await fetch(url, { ...options, signal: controller.signal });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || `Request failed with status ${res.status}`);
+            return data;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+    // ── Player hours state ────────────────────────────────────────────────
+    const playerHours = {};
+    {% for player in players %}
+    playerHours['{{ player.get_name() }}'] = 0;
+    {% endfor %}
+
+    function setHours(name, hrs, btn) {
+        playerHours[name] = hrs;
+        btn.parentElement.querySelectorAll('.hours-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
+
     // ── Navigation ────────────────────────────────────────────────────────
     function showPage(name) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -264,6 +353,53 @@
         document.getElementById('sub-view').style.display = name === 'view' ? 'block' : 'none';
         document.getElementById('sub-mark-btn').className = 'btn btn-sm ' + (name === 'mark' ? 'btn-primary' : 'btn-gray');
         document.getElementById('sub-view-btn').className = 'btn btn-sm ' + (name === 'view' ? 'btn-primary' : 'btn-gray');
+    }
+
+    function showSessTab(name) {
+        document.getElementById('sess-new').style.display  = name === 'new'  ? 'block' : 'none';
+        document.getElementById('sess-summ').style.display = name === 'summ' ? 'block' : 'none';
+        document.getElementById('sess-new-btn').className  = 'btn btn-sm ' + (name === 'new'  ? 'btn-purple' : 'btn-gray');
+        document.getElementById('sess-summ-btn').className = 'btn btn-sm ' + (name === 'summ' ? 'btn-purple' : 'btn-gray');
+        if (name === 'summ') loadPlayerSummary();
+    }
+
+    async function loadPlayerSummary() {
+        const box = document.getElementById('player-summary');
+        box.innerHTML = '<div class="empty"><div class="icon">⏳</div><p>Loading...</p></div>';
+        const res     = await fetch('/session/summary');
+        const players = await res.json();
+        if (!players.length) {
+            box.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No session data yet.</p></div>';
+            return;
+        }
+        box.innerHTML = players.map(p => {
+            const bal = p.balance;
+            let balClass, balLabel, balValue;
+            if (bal > 0)      { balClass = 'advance'; balLabel = 'Advance';  balValue = `+₹${bal.toFixed(0)}`; }
+            else if (bal < 0) { balClass = 'balance'; balLabel = 'Balance';  balValue = `-₹${Math.abs(bal).toFixed(0)}`; }
+            else              { balClass = 'settled'; balLabel = 'Settled';  balValue = '₹0'; }
+            return `
+            <div class="player-summary-card">
+                <div class="player-summary-name">${p.name}</div>
+                <div class="summary-boxes">
+                    <div class="summary-box">
+                        <div class="summary-box-label">Played</div>
+                        <div class="summary-box-value hours">${p.total_hours}hr</div>
+                        <div class="summary-box-sub">total hours</div>
+                    </div>
+                    <div class="summary-box" style="cursor:pointer;" onclick="openPayModal('${p.name}',${p.total_due},${p.total_paid})">
+                        <div class="summary-box-label">Advance Paid</div>
+                        <div class="summary-box-value paid">₹${p.total_paid.toFixed(0)}</div>
+                        <div class="summary-box-sub">of ₹${p.total_due.toFixed(0)} due</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-box-label">${balLabel}</div>
+                        <div class="summary-box-value ${balClass}">${balValue}</div>
+                        <div class="summary-box-sub">${bal > 0 ? 'extra amount' : bal < 0 ? 'remaining to pay' : 'amount settled'}</div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
     }
 
     // ── Toast ─────────────────────────────────────────────────────────────
@@ -284,11 +420,7 @@
         const skill  = document.getElementById('new-skill').value;
         const name   = nameEl.value.trim();
         if (!name) return showToast('⚠️ Enter a player name');
-        await fetch('/add_player', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ name, skill })
-        });
+        await fetch('/add_player', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name, skill }) });
         nameEl.value = '';
         showToast('✅ ' + name + ' added');
         setTimeout(() => location.reload(), 800);
@@ -296,11 +428,7 @@
 
     async function removePlayer(name) {
         if (!confirm('Remove ' + name + ' from roster?')) return;
-        await fetch('/remove_player', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ name })
-        });
+        await fetch('/remove_player', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name }) });
         showToast('🗑️ ' + name + ' removed');
         setTimeout(() => location.reload(), 800);
     }
@@ -309,11 +437,7 @@
     async function generateGroups() {
         const present = Array.from(document.querySelectorAll('.present-check:checked')).map(cb => cb.value);
         if (present.length < 4) return showToast('⚠️ Check at least 4 players in Roster');
-        const res  = await fetch('/randomize', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ present_players: present })
-        });
+        const res  = await fetch('/randomize', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ present_players: present }) });
         const data = await res.json();
         const box  = document.getElementById('match-results');
         box.innerHTML = '';
@@ -323,15 +447,9 @@
                 <div class="court-card">
                     <div class="court-title">🏸 Court ${g.group_number}</div>
                     <div class="teams-row">
-                        <div class="team-box">
-                            <div class="team-label">Team A</div>
-                            <div class="team-names">${g.team1.join('<br>')}</div>
-                        </div>
+                        <div class="team-box"><div class="team-label">Team A</div><div class="team-names">${g.team1.join('<br>')}</div></div>
                         <div class="vs-badge">VS</div>
-                        <div class="team-box">
-                            <div class="team-label">Team B</div>
-                            <div class="team-names">${g.team2.join('<br>')}</div>
-                        </div>
+                        <div class="team-box"><div class="team-label">Team B</div><div class="team-names">${g.team2.join('<br>')}</div></div>
                     </div>
                 </div>`;
         });
@@ -346,47 +464,210 @@
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('mark-date').value = today;
     document.getElementById('view-date').value = today;
+    document.getElementById('sess-date').value = today;
 
     async function saveAttendance() {
         const date    = document.getElementById('mark-date').value;
         const present = Array.from(document.querySelectorAll('.attendance-check:checked')).map(cb => cb.value);
-        const res  = await fetch('/mark_attendance', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ present_players: present, date })
-        });
-        const data = await res.json();
-        if (data.error) return showToast('❌ ' + data.error);
-        const banner = document.getElementById('att-summary');
-        banner.className = 'summary-banner show';
-        banner.innerHTML = `
-            <strong>✅ Saved for ${data.date}</strong><br>
-            <span style="color:#4caf50">Present (${data.present.length}): ${data.present.join(', ') || '—'}</span><br>
-            <span style="color:#ef5350">Absent (${data.absent.length}): ${data.absent.join(', ') || '—'}</span>
-        `;
-        showToast('✅ Attendance saved!');
+        try {
+            const data = await fetchJsonWithTimeout('/mark_attendance', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ present_players: present, date }) });
+            const banner = document.getElementById('att-summary');
+            banner.className = 'summary-banner show';
+            banner.innerHTML = `
+                <strong>✅ Saved for ${data.date}</strong><br>
+                <span style="color:#4caf50">Present (${data.present.length}): ${data.present.join(', ') || '—'}</span><br>
+                <span style="color:#ef5350">Absent (${data.absent.length}): ${data.absent.join(', ') || '—'}</span>`;
+            showToast('✅ Attendance saved!');
+        } catch (error) {
+            const message = error.name === 'AbortError'
+                ? 'Attendance save timed out. The server is not responding.'
+                : error.message;
+            showToast('❌ ' + message);
+        }
     }
 
     async function fetchAttendance(mode) {
-        const date = mode === 'today' ? today : document.getElementById('view-date').value;
+        const rawDate = document.getElementById('view-date').value;
+        const parts   = rawDate.split('-');
+        const fmt     = parts.length === 3 && parts[0].length === 2 ? `${parts[2]}-${parts[1]}-${parts[0]}` : rawDate;
+        const date    = mode === 'today' ? today : fmt;
         if (!date) return showToast('⚠️ Select a date');
-        const res     = await fetch('/attendance/' + date);
-        const records = await res.json();
         const card    = document.getElementById('att-records-card');
         const box     = document.getElementById('att-records');
-        const title   = document.getElementById('att-records-date');
+        document.getElementById('att-records-date').textContent = 'Records — ' + date;
         card.style.display = 'block';
-        title.textContent  = 'Records — ' + date;
-        if (!records.length) {
-            box.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No records for this date.</p></div>';
-            return;
+        box.innerHTML = '<div class="empty"><div class="icon">⏳</div><p>Loading...</p></div>';
+        try {
+            const records = await fetchJsonWithTimeout('/attendance/' + date);
+            if (!records.length) { box.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No records for this date.</p></div>'; return; }
+            box.innerHTML = records.map(r => `
+                <div class="att-row">
+                    <span class="att-name">${r.player_name}</span>
+                    <span class="status-badge status-${r.status}">${r.status}</span>
+                </div>`).join('');
+        } catch (error) {
+            const message = error.name === 'AbortError'
+                ? 'Attendance history timed out. The server is not responding.'
+                : error.message;
+            box.innerHTML = `<div class="empty"><div class="icon">❌</div><p>${message}</p></div>`;
+            showToast('❌ ' + message);
         }
-        box.innerHTML = records.map(r => `
-            <div class="att-row">
-                <span class="att-name">${r.player_name}</span>
-                <span class="status-badge status-${r.status}">${r.status}</span>
-            </div>
-        `).join('');
+    }
+    function previewCost() {
+        const courts   = parseFloat(document.getElementById('sess-courts').value);
+        const hours    = parseFloat(document.getElementById('sess-hours').value);
+        const total    = courts * hours * 350;
+        const totalHrs = Object.values(playerHours).reduce((a, b) => a + b, 0);
+        if (totalHrs === 0) return showToast('⚠️ Set hours for at least one player');
+        let html = `<strong>💰 Total Cost: ₹${total.toFixed(0)}</strong><br>`;
+        html += `<span style="color:var(--muted)">${courts} court(s) × ${hours}hr × ₹350/hr</span><br><br>`;
+        Object.entries(playerHours).forEach(([name, hrs]) => {
+            if (hrs > 0) html += `${name} &nbsp;(${hrs}hr) → <strong>₹${((hrs / totalHrs) * total).toFixed(0)}</strong><br>`;
+        });
+        const el = document.getElementById('cost-preview');
+        el.innerHTML = html;
+        el.className = 'cost-preview show';
+    }
+
+    async function saveSession() {
+        const date     = document.getElementById('sess-date').value;
+        const courts   = document.getElementById('sess-courts').value;
+        const hours    = document.getElementById('sess-hours').value;
+        const totalHrs = Object.values(playerHours).reduce((a, b) => a + b, 0);
+        if (!date)        return showToast('⚠️ Select a date');
+        if (totalHrs === 0) return showToast('⚠️ Set hours for at least one player');
+        try {
+            await fetchJsonWithTimeout('/session/create', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ date, courts, hours, player_hours: playerHours }) });
+            showToast('✅ Session saved!');
+            document.getElementById('cost-preview').className = 'cost-preview';
+        } catch (error) {
+            const message = error.name === 'AbortError'
+                ? 'Session save timed out. The server is not responding.'
+                : error.message;
+            showToast('❌ ' + message);
+        }
+    }
+
+    // ── Pay modal (from Summary) ──────────────────────────────────────────
+    let _payName = '', _payDue = 0, _payPaid = 0;
+
+    function openPayModal(name, due, paid) {
+        _payName = name; _payDue = due; _payPaid = paid;
+        const bal = paid - due;
+        document.getElementById('pay-modal-info').textContent =
+            `${name} · Due ₹${due.toFixed(0)} · Advance Paid ₹${paid.toFixed(0)} · ${bal >= 0 ? 'Advance ₹' + bal.toFixed(0) : 'Balance ₹' + Math.abs(bal).toFixed(0)}`;
+        document.getElementById('pay-amount').value = bal < 0 ? Math.abs(bal) : '';
+        document.getElementById('pay-modal').classList.add('open');
+    }
+
+    function closePayModal() { document.getElementById('pay-modal').classList.remove('open'); }
+
+    async function submitPayment() {
+        const amount = parseFloat(document.getElementById('pay-amount').value);
+        if (!amount || amount <= 0) return showToast('⚠️ Enter a valid amount');
+        // Get latest session date for this player
+        const sessRes  = await fetch('/session/all');
+        const sessions = await sessRes.json();
+        // Find the most recent session where this player has a balance
+        const target = sessions.find(s => s.players.some(p => p.name === _payName && p.amount_paid < p.amount_due));
+        if (!target) return showToast('⚠️ No outstanding balance found');
+        const res  = await fetch('/session/pay', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ date: target.date, player_name: _payName, amount }) });
+        const data = await res.json();
+        if (data.error) return showToast('❌ ' + data.error);
+        closePayModal();
+        showToast(`✅ ₹${amount} recorded for ${_payName}`);
+        loadPlayerSummary();
+    }
+
+    async function clearAllPayments() {
+        const ok = confirm('Clear all paid amounts, due amounts, and recorded hours for every player? This only happens if you confirm.');
+        if (!ok) return;
+        const res = await fetch('/session/clear-payments', { method: 'POST' });
+        const data = await res.json();
+        if (data.error) return showToast('âŒ ' + data.error);
+        showToast(`âœ… Cleared paid amounts for ${data.players_reset} entries`);
+        if (document.getElementById('page-sessions').classList.contains('active')) loadPlayerSummary();
+    }
+
+    document.getElementById('pay-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closePayModal(); });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    async function exportSummaryExcel() {
+        showToast('⏳ Preparing export...');
+
+        let players;
+        try {
+            const res = await fetch('/session/summary');
+            players   = await res.json();
+        } catch (e) {
+            return showToast('❌ Failed to fetch summary data');
+        }
+
+        if (!players || !players.length) return showToast('⚠️ No data to export');
+
+        // ── Headers ───────────────────────────────────────────────────────
+        const headers = [
+            'Player Name',
+            'Hours Played',
+            'Amount Due (₹)',
+            'Advance Paid (₹)',
+            'Status',
+            'Advance / Balance (₹)'
+        ];
+
+        // ── Data rows ─────────────────────────────────────────────────────
+        const rows = players.map(p => {
+            const bal = p.balance;
+            let status, amount;
+            if (bal > 0)      { status = 'Advance'; amount = '+₹' + Math.round(bal); }
+            else if (bal < 0) { status = 'Balance'; amount = '-₹' + Math.round(Math.abs(bal)); }
+            else              { status = 'Settled';  amount = '₹0'; }
+            return [
+                p.name,
+                p.total_hours,
+                Math.round(p.total_due),
+                Math.round(p.total_paid),
+                status,
+                amount
+            ];
+        });
+
+        // ── Totals row ────────────────────────────────────────────────────
+        const sumHrs  = players.reduce((s, p) => s + p.total_hours, 0);
+        const sumDue  = players.reduce((s, p) => s + p.total_due,   0);
+        const sumPaid = players.reduce((s, p) => s + p.total_paid,  0);
+        const netBal  = sumPaid - sumDue;
+        rows.push([
+            'TOTAL',
+            Math.round(sumHrs * 10) / 10,
+            Math.round(sumDue),
+            Math.round(sumPaid),
+            '',
+            (netBal >= 0 ? '+₹' : '-₹') + Math.round(Math.abs(netBal))
+        ]);
+
+        // ── Build worksheet ───────────────────────────────────────────────
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+        // Column widths
+        ws['!cols'] = [
+            { wch: 20 },
+            { wch: 14 },
+            { wch: 16 },
+            { wch: 16 },
+            { wch: 12 },
+            { wch: 22 },
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, 'Summary');
+
+        // ── Download ──────────────────────────────────────────────────────
+        const date     = new Date().toISOString().split('T')[0];
+        const filename = `badminton_summary_${date}.xlsx`;
+        XLSX.writeFile(wb, filename);
+        showToast('✅ Exported ' + filename);
     }
 </script>
 </body>
