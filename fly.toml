@@ -1,25 +1,31 @@
-app = "badminton-management"
-primary_region = "sin"
+# fly.toml app configuration file generated for badminton-2-0-o4ix4a on 2026-10-21T14:40:52Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'badminton-2-0-o4ix4a'
+primary_region = 'sin'
 
 [build]
 
 [env]
-  DATA_DIR = "/data"
-  PORT = "8080"
+  DATA_DIR = '/data'
+  PORT = '8080'
+
+[[mounts]]
+  source = 'badminton_data'
+  destination = '/data'
+  initial_size = '1gb'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
 
 [[vm]]
-  memory = "256mb"
-  cpu_kind = "shared"
+  memory = '256mb'
+  cpu_kind = 'shared'
   cpus = 1
-
-[[mounts]]
-  source = "badminton_data"
-  destination = "/data"
-  initial_size = "1gb"
+  memory_mb = 256
