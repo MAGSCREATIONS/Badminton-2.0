@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for badminton-2-0-o4ix4a on 2026-10-21T14:40:52Z
+# fly.toml app configuration file generated for badminton-2-0-odxusw on 2026-10-21T16:15:33Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'badminton-2-0-o4ix4a'
+app = 'badminton-2-0-odxusw'
 primary_region = 'sin'
 
 [build]
